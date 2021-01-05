@@ -1,4 +1,4 @@
-package juc.atguigu;
+package juc.athome;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;

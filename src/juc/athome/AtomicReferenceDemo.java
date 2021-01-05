@@ -1,4 +1,4 @@
-package juc.atguigu;
+package juc.athome;
 
 import jdk.nashorn.internal.objects.annotations.Getter;
 

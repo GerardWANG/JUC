@@ -1,4 +1,4 @@
-package juc.atguigu;
+package juc.athome;
 
 import java.util.HashMap;
 import java.util.Map;
