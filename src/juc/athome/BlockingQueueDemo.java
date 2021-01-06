@@ -4,24 +4,39 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class BlockingQueueDemo {
-    public static void main(String[] args) throws Exception{
-        //因为ArrayBlockingQueue是有界的，所以需要填3
-        BlockingQueue<String> blockingQueue = new ArrayBlockingQueue<>(3);
+    public static void main(String[] args){
 
-        System.out.println(blockingQueue.offer("a", 2L, TimeUnit.SECONDS));
-        System.out.println(blockingQueue.offer("b", 2L, TimeUnit.SECONDS));
-        System.out.println(blockingQueue.offer("c", 2L, TimeUnit.SECONDS));
+        BlockingQueue<String> blockingQueue = new SynchronousQueue<>();
 
-        System.out.println(blockingQueue.poll(2L, TimeUnit.SECONDS));
-        System.out.println(blockingQueue.poll(2L, TimeUnit.SECONDS));
-        System.out.println(blockingQueue.poll(2L, TimeUnit.SECONDS));
-        System.out.println(blockingQueue.poll(2L, TimeUnit.SECONDS));
+        new Thread(()->{
+            try {
+                System.out.println(Thread.currentThread().getName()+"\t put 1");
+                blockingQueue.put("1");
+                System.out.println(Thread.currentThread().getName()+"\t put 2");
+                blockingQueue.put("2");
+                System.out.println(Thread.currentThread().getName()+"\t put 3");
+                blockingQueue.put("3");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+
+        new Thread(()->{
+            try {
+                try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+                System.out.println(Thread.currentThread().getName() + "\t get " + blockingQueue.take());
+                try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+                System.out.println(Thread.currentThread().getName() + "\t get " + blockingQueue.take());
+                try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException e) { e.printStackTrace(); }
+                System.out.println(Thread.currentThread().getName() + "\t get " + blockingQueue.take());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
     }
 }
